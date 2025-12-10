@@ -2,7 +2,12 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from pyshorteners import Shortener
+
+from PyQt5.QtGui import QIcon, QPixmap
+
 import qrcode
+
+from notifypy import Notify
 # python -m pip install -r requirements.txt
 
 def CREATE_SHORT_URL(url):
@@ -10,9 +15,20 @@ def CREATE_SHORT_URL(url):
 
     return link.tinyurl.short(url)
 
-def GENERATE_QR(url):
-    img = qrcode.make(url)
-    img.save("qrCode.png")
+# GENERATE QR CODE
+def run_example(url, *args, **kwargs):
+    """
+    Build an example QR Code and display it.
+
+    There's an even easier way than the code here though: just use the ``make``
+    shortcut.
+    """
+    qr = qrcode.QRCode(*args, **kwargs)
+    qr.add_data(url)
+
+    im = qr.make_image()
+    im.show()
+# -------------------------
 
 class Main(QMainWindow):
     def __init__(self):
@@ -34,15 +50,22 @@ class Main(QMainWindow):
 
     
     def setText(self):
-        self.text_url = CREATE_SHORT_URL(self.getURL())
-        print(self.text_url)
 
-        self.setURLshort()
-    
-    def setQrcode(self):
-        self.img.setPixmap()
-        
-    
+        if not self.getURL():
+            notify = Notify()
+            notify.title = "Error"
+            notify.message = "Please enter a valid URL"
+            notify.send()
+            return
+
+        else:
+            self.text_url = CREATE_SHORT_URL(self.getURL())
+            print(self.text_url)
+
+            run_example(self.text_url)
+
+            self.setURLshort()
+
 
 
 if __name__ == "__main__":
