@@ -1,0 +1,52 @@
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.uic import loadUi
+from pyshorteners import Shortener
+import qrcode
+# python -m pip install -r requirements.txt
+
+def CREATE_SHORT_URL(url):
+    link = Shortener()
+
+    return link.tinyurl.short(url)
+
+def GENERATE_QR(url):
+    img = qrcode.make(url)
+    img.save("qrCode.png")
+
+class Main(QMainWindow):
+    def __init__(self):
+        super(Main, self).__init__()
+        loadUi("interfaceQr.ui", self)
+        self.show()
+
+
+        self.text_url = ''
+        self.text_short = ''
+
+        self.generateQr.clicked.connect(self.setText)
+
+    def getURL(self):
+        return self.textUrl.text()
+    
+    def setURLshort(self):
+        self.textShort.setText(self.text_url)
+
+    
+    def setText(self):
+        self.text_url = CREATE_SHORT_URL(self.getURL())
+        print(self.text_url)
+
+        self.setURLshort()
+    
+    def setQrcode(self):
+        self.img.setPixmap()
+        
+    
+
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = Main()
+    app.exec_()
+    
