@@ -66,6 +66,10 @@ class Main(QMainWindow):
 
             self.setURLshort()
 
+    def setQrcode(self):
+        pixmap = QPixmap('qrcode.png')
+        self.img.setPixmap(pixmap)
+
 
 
 if __name__ == "__main__":
