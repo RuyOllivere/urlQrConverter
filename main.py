@@ -103,9 +103,13 @@ class Main(QMainWindow):
             pathway = path.dirname(archieve)
 
             name = archieve.removeprefix(pathway)
+
+            with open('qrcode.png', 'rb') as photo:
+                data = photo.read()
+
             # saving file located by user
             with open(pathway +f'{name}.png', 'wb') as op:
-                pass
+                op.write(data)
     # def saveQrcode(self):
 
 
