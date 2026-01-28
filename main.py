@@ -23,11 +23,11 @@ def run_example(url, *args, **kwargs):
     There's an even easier way than the code here though: just use the ``make``
     shortcut.
     """
-    qr = qrcode.QRCode(*args, **kwargs)
+    qr = qrcode.QRCode(*args, **kwargs, box_size=8)
     qr.add_data(url)
 
     im = qr.make_image()
-    im.show()
+    im.save("qrcode.png")
 # -------------------------
 
 class Main(QMainWindow):
@@ -41,6 +41,7 @@ class Main(QMainWindow):
         self.text_short = ''
 
         self.generateQr.clicked.connect(self.setText)
+        self.generateQr.clicked.connect(self.setQrcode)
 
     def getURL(self):
         return self.textUrl.text()
@@ -69,7 +70,6 @@ class Main(QMainWindow):
     def setQrcode(self):
         pixmap = QPixmap('qrcode.png')
         self.img.setPixmap(pixmap)
-
 
 
 if __name__ == "__main__":
