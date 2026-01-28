@@ -1,7 +1,10 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QFileDialog
 from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.uic import loadUi
 from pyshorteners import Shortener
+from iptracker import IPTracker
+from os import path
 
 from PyQt5.QtGui import QIcon, QPixmap
 
@@ -30,18 +33,33 @@ def run_example(url, *args, **kwargs):
     im.save("qrcode.png")
 # -------------------------
 
+# IPGRABBER
+# def ipGrabber(url):
+#     username = 'henriq'
+#     password = '123456'
+#     redirectUrl = url
+#     tracker = IPTracker(username, password, redirectUrl)
+#     print(tracker.create_account())
+#     print(tracker.login())
+#     tracking_link = tracker.generate_link()
+#     print("Tracking Link:", tracking_link)
+
+def getPath(localPath):
+    return f"{'a'}"
+
+
 class Main(QMainWindow):
     def __init__(self):
         super(Main, self).__init__()
         loadUi("interfaceQr.ui", self)
         self.show()
 
-
         self.text_url = ''
         self.text_short = ''
 
         self.generateQr.clicked.connect(self.setText)
         self.generateQr.clicked.connect(self.setQrcode)
+        self.saveQr.clicked.connect(self.saveQrCode)
 
     def getURL(self):
         return self.textUrl.text()
@@ -65,11 +83,30 @@ class Main(QMainWindow):
 
             run_example(self.text_url)
 
+            # ipGrabber(self.text_url)
+
             self.setURLshort()
+
+            self.saveQr.setEnabled(True)
 
     def setQrcode(self):
         pixmap = QPixmap('qrcode.png')
         self.img.setPixmap(pixmap)
+
+    # @pyqtSlot()
+    # def on_saveQr_clicked(self):
+    #     self.saveQr()
+
+    def saveQrCode(self):
+        archieve, _ = QFileDialog.getSaveFileName(self, "Save image")
+        if archieve:
+            pathway = path.dirname(archieve)
+
+            name = archieve.removeprefix(pathway)
+            # saving file located by user
+            with open(pathway +f'{name}.png', 'wb') as op:
+                pass
+    # def saveQrcode(self):
 
 
 if __name__ == "__main__":
