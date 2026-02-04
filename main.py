@@ -2,8 +2,10 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QFileDialog
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.uic import loadUi
-from pyshorteners import Shortener
+from pyshorteners import Shortener1
+import pyshorteners.tinyurl
 from iptracker import IPTracker
+import sys
 from os import path
 
 from PyQt5.QtGui import QIcon, QPixmap
@@ -14,7 +16,7 @@ from notifypy import Notify
 # python -m pip install -r requirements.txt
 
 def CREATE_SHORT_URL(url):
-    link = Shortener()
+    link = Shortener1()
 
     return link.tinyurl.short(url)
 
@@ -44,6 +46,10 @@ def run_example(url, *args, **kwargs):
 #     tracking_link = tracker.generate_link()
 #     print("Tracking Link:", tracking_link)
 
+def loadFile(file):
+    base_path = getattr(sys, "_MEIPASS", path.dirname(path.abspath(__file__)))
+    return path.join(base_path, file)
+
 def getPath(localPath):
     return f"{'a'}"
 
@@ -51,7 +57,7 @@ def getPath(localPath):
 class Main(QMainWindow):
     def __init__(self):
         super(Main, self).__init__()
-        loadUi("interfaceQr.ui", self)
+        loadUi(loadFile("./interfaceQr.ui"), self)
         self.show()
 
         self.text_url = ''
