@@ -6,6 +6,7 @@ from pyshorteners import Shortener1
 import pyshorteners.tinyurl
 from iptracker import IPTracker
 import sys
+from flask import Flask
 from os import path
 
 from PyQt5.QtGui import QIcon, QPixmap
@@ -53,6 +54,8 @@ def loadFile(file):
 def getPath(localPath):
     return f"{'a'}"
 
+
+app = Flask(__name__)
 
 class Main(QMainWindow):
     def __init__(self):
